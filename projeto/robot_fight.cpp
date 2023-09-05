@@ -326,16 +326,16 @@ void drawRobots() {
     // drawCabeca();
 
     glPushMatrix();
-    // glTranslatef(-90, 0, 0);
+    glTranslatef(-90, 0, 0);
     // glRotatef(90, 0, 1, 0);
     drawCorpo(1);
     glPopMatrix();
 
-    // glPushMatrix();
-    // glTranslatef(90, 0, 0);
+    glPushMatrix();
+    glTranslatef(90, 0, 0);
     // glRotatef(-90, 0, 1, 0);
-    // drawCorpo(2);
-    // glPopMatrix();
+    drawCorpo(2);
+    glPopMatrix();
 
 }
 
@@ -493,11 +493,14 @@ void animate() {
 
     if (animacaoAtual == 5) {
 
-        troncoAngleBotY += deltaTimeTroncoY;
-        troncoAngleTopY = (troncoAngleBotY / 140) * 40;
+        angleOmbroDirX -= deltaTimeOmbroX;
 
-        if (troncoAngleBotY > 140) {
-            deltaTimeTroncoY = 0;
+        angleCotoveloDirX = (angleOmbroDirX / -90) * -90;
+
+        angleCotoveloEsqX = (angleOmbroDirX / -90) * -90;
+
+        if (angleOmbroDirX < -90) {
+            deltaTimeOmbroX = 0;
         }
 
     }
