@@ -253,7 +253,7 @@ void drawTroncoSuperior() {
 void drawTroncoInferior() {
 
     glPushMatrix(); // tronco
-    
+
     glRotatef(troncoAngleBotX, 1, 0, 0);
     glRotatef(troncoAngleBotY, 0, 1, 0);
     glRotatef(troncoAngleBotZ, 0, 0, 1);
@@ -275,7 +275,7 @@ void drawTroncoInferior() {
     glTranslatef(-5, -25, 0);
     drawPerna(1);
     glPopMatrix(); // fim perna dir
-    
+
     glPopMatrix(); // fim tronco
 
 }
@@ -337,6 +337,98 @@ void drawRobots() {
     drawCorpo(2);
     glPopMatrix();
 
+}
+
+void resetIdle() {
+    baseAnim = 0.0f;
+    deltaTimeBaseAnim = deltaTime;
+
+    angleCorpoX = 0.0f;
+    angleCorpoY = 0.0f;
+    angleCorpoZ = 0.0f;
+
+    deltaTimeAngleCorpoX = deltaTime;
+
+    // Tronco
+    deltaTimeTroncoBase = 1.5;
+    troncoAngleTopX = 0;
+    troncoAngleTopY = 0;
+    troncoAngleTopZ = 0;
+    troncoAngleBotX = 0;
+    troncoAngleBotY = 0;
+    troncoAngleBotZ = 0;
+    deltaTimeTroncoX = 1.5;
+    deltaTimeTroncoZ = 0.5;
+    deltaTimeTroncoY = 1.5;
+
+    timerAnim = 0.0f;
+
+    /* Ombro */
+
+    angleOmbroIdle = -45.0f;
+
+    angleOmbroDirX = 0.0f;
+    angleOmbroDirY = 0.0f;
+    angleOmbroDirZ = 0.0f;
+    angleOmbroEsqX = 0.0f;
+    angleOmbroEsqY = 0.0f;
+    angleOmbroEsqZ = 0.0f;
+
+    deltaTimeOmbroBase = 2;
+    deltaTimeOmbroX = deltaTimeOmbroBase;
+    deltaTimeOmbroY = deltaTimeOmbroBase;
+    deltaTimeOmbroZ = 0.5;
+
+    /* Cotovelo */
+    cotoveloAngleIdle = -110;
+
+    angleCotoveloDirX = 0.0f;
+    angleCotoveloDirY = 0.0f;
+    angleCotoveloDirZ = 0.0f;
+    angleCotoveloEsqX = 0.0f;
+    angleCotoveloEsqY = 0.0f;
+    angleCotoveloEsqZ = 0.0f;
+
+    deltaTimeCotoveloBase = 1.5;
+    deltaTimeCotoveloX = deltaTimeCotoveloBase;
+    deltaTimeCotoveloY = deltaTimeCotoveloBase;
+    deltaTimeCotoveloZ = deltaTimeCotoveloBase;
+
+    // Perna
+    anglePernaDirX = 0.0f;
+    anglePernaDirY = 0.0f;
+    anglePernaDirZ = 0.0f;
+    anglePernaEsqX = 0.0f;
+    anglePernaEsqY = 0.0f;
+    anglePernaEsqZ = 0.0f;
+
+    // Coxa
+    angleCoxaDirX = 0.0f;
+    angleCoxaDirY = 0.0f;
+    angleCoxaDirZ = 0.0f;
+    angleCoxaEsqX = 0.0f;
+    angleCoxaEsqY = 0.0f;
+    angleCoxaEsqZ = 0.0f;
+
+
+    deltaTimeCoxaBase = 1.5;
+    deltaTimeCoxaX = deltaTimeCoxaBase;
+    deltaTimeCoxaY = deltaTimeCoxaBase;
+    deltaTimeCoxaZ = deltaTimeCoxaBase;
+
+    // Joelho
+    angleJoelhoDirX = 0.0f;
+    angleJoelhoDirY = 0.0f;
+    angleJoelhoDirZ = 0.0f;
+    angleJoelhoEsqX = 0.0f;
+    angleJoelhoEsqY = 0.0f;
+    angleJoelhoEsqZ = 0.0f;
+
+    deltaTimeJoelho = deltaTime;
+
+    transCorpoX = 0.0f;
+    transCorpoY = 0.0f;
+    transCorpoZ = 0.0f;
 }
 
 void resetAnim() {
@@ -481,7 +573,7 @@ void animate() {
         troncoAngleTopY = (angleCoxaDirZ / -30) * 40;
 
         angleCotoveloDirX = (angleCoxaDirZ / -30) * -90;
-        
+
         angleOmbroEsqX = (angleCoxaDirZ / -30) * -40;
 
         if (angleCoxaDirZ < -30) {
@@ -495,14 +587,59 @@ void animate() {
 
         angleOmbroDirX -= deltaTimeOmbroX;
 
-        angleCotoveloDirX = (angleOmbroDirX / -90) * -90;
+        angleCotoveloDirX = (-1 * ((angleOmbroDirX / -90) - 1)) * -90;
 
+        angleOmbroEsqX = (-1 * ((angleOmbroDirX / -90) - 1)) * -30;
         angleCotoveloEsqX = (angleOmbroDirX / -90) * -90;
 
         if (angleOmbroDirX < -90) {
             deltaTimeOmbroX = 0;
+            animacaoAtual = 6;
+            resetAnim();
         }
 
+    }
+
+    if (animacaoAtual == 6) {
+        troncoAngleTopY -= deltaTimeTroncoBase;
+
+        transCorpoX = (troncoAngleTopY / 40) * -10;
+
+        angleCoxaDirZ += deltaTimeCoxaZ;
+
+        anglePernaEsqY = (angleCoxaDirZ / -30) * 90;
+
+        if (troncoAngleTopY < 0) {
+            deltaTimeTroncoBase = 0;
+            animacaoAtual = 7;
+        }
+
+        if (angleCoxaDirZ > 0) {
+            deltaTimeCoxaZ = 0;
+        }
+
+    }
+
+    if (animacaoAtual == 7) {
+        angleCoxaEsqX -= deltaTimeCoxaX * 2;
+
+        angleOmbroDirX = (-1 * ((angleCoxaEsqX / -90) - 1)) * -90;
+
+        angleJoelhoEsqX = (angleCoxaDirX / -110) * 1;
+
+        if (angleCoxaEsqX < -110) {
+            deltaTimeCoxaX = deltaTimeCoxaX * -1;
+        }
+
+        if (angleCoxaEsqX > 0) {
+            animacaoAtual = 8;
+        }
+
+    }
+
+    if (animacaoAtual == 8) {
+        resetIdle();
+        animacaoAtual = 10;
     }
 
     if (animacaoAtual == 10) { // cambalhota
@@ -524,6 +661,8 @@ void animate() {
         }
         if (angleCorpoX < -360) {
             angleJoelhoDirX = angleJoelhoEsqX = angleCoxaDirX = angleCoxaEsqX = angleCorpoX = 0;
+            resetIdle();
+            animacaoAtual = 1;
         }
 
     }
