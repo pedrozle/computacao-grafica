@@ -1,6 +1,7 @@
 
 /*  Definitions for bitflags  */
 typedef unsigned int tgaFLAG;
+#include <GL/glu.h>
 
 #define TGA_DEFAULT            0x0000000000000000   /* In case we don't want any parameters */
 #define TGA_FREE               0x0000000000000001   /* Bit flag 0 */
