@@ -32,10 +32,7 @@ Lista de comandos utilizados para visualizar a cena:
 
 Lista dos botões do menu
 
--   `1` Tecla para ativar a animação IDLE
--   `2` Tecla para ativar a animação de soco
--   `3` Tecla para ativar a animação de chute
--   `4` Tecla para ativar a animação da cambalhota
+-   `2` Inicia a animação
 
 ### Animação
 

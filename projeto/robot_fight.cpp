@@ -9,6 +9,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#pragma comment(lib, "winmm.lib") // Add the Windows library that contains the code for the function PlaySound()
 
 #include "robot.h"
 
@@ -17,6 +18,15 @@ using namespace std;
 /* Extension Management */
 PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  glCompressedTexImage2DARB = NULL;
 PFNGLGETCOMPRESSEDTEXIMAGEARBPROC glGetCompressedTexImageARB = NULL;
+
+GLfloat win, r = 1, g = 1, b = 1, a = 1;
+GLint view_w, view_h, primitiva;
+GLint gouraud = 0;
+
+//Cores da esfera B
+GLfloat mat_b_difusa[] = { r, g, b, a };   // o valor de alfa=0.5 d� a apar�ncia transl�cida
+GLfloat mat_b_especular[] = { 1.0, 1.0, 1.0, 0.5 };
+GLfloat mat_b_brilho[] = { 50.0 };
 
 /* Default support - lets be optimistic! */
 bool tgaCompressedTexSupport = true;
@@ -375,7 +385,7 @@ GLuint tgaLoadAndBind(char* file_name, tgaFLAG mode)
 
 
 // vetor com os n�meros das texturas
-GLuint texture_id[2];
+GLuint texture_id[4];
 
 void initTexture(void)
 {
@@ -385,18 +395,75 @@ void initTexture(void)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     // Define quantas texturas ser�o usadas no programa 
-    glGenTextures(1, texture_id);  // 1 = uma textura;
+    glGenTextures(3, texture_id);  // 1 = uma textura;
     // texture_id = vetor que guardas os n�meros das texturas
 
 // Define o n�mero da textura do cubo.
     texture_id[0] = 1001;
+    texture_id[1] = 1002;
+    texture_id[2] = 1003;
 
     // Define que tipo de textura ser� usada
     // GL_TEXTURE_2D ==> define que ser� usada uma textura 2D (bitmaps)
     // texture_id[CUBE_TEXTURE]  ==> define o n�mero da textura 
-    image_t temp_image;
+    image_t ringue_chao, camisa_roboto;
     glBindTexture(GL_TEXTURE_2D, texture_id[0]);
-    tgaLoad("C:/Users/pedro/Documents/repos/static/computacao-grafica/aula3/aula3/cao.tga", &temp_image, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:/Users/pedro/Documents/repos/static/computacao-grafica/projeto/ringue.tga", &ringue_chao, TGA_FREE | TGA_LOW_QUALITY);
+
+    glBindTexture(GL_TEXTURE_2D, texture_id[1]);
+    tgaLoad("C:/Users/pedro/Documents/repos/static/computacao-grafica/projeto/camisa.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+
+    glBindTexture(GL_TEXTURE_2D, texture_id[2]);
+    tgaLoad("C:/Users/pedro/Documents/repos/static/computacao-grafica/projeto/cao.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+}
+
+void cubo(int drawTop) {
+    glScalef(5, 5, 5);
+    // glRotatef(180, 1, 0, 0);
+    // glRotatef(180, 0, 0, 1);
+    glBegin(GL_QUADS);
+    // Front Face
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+    // Back Face
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+
+    if (drawTop == 1) {
+        // Top Face
+        glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
+        glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+        glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+        glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+    }
+    else {
+        // Top Face
+        glVertex3f(-1.0f, 1.0f, -1.0f);
+        glVertex3f(-1.0f, 1.0f, 1.0f);
+        glVertex3f(1.0f, 1.0f, 1.0f);
+        glVertex3f(1.0f, 1.0f, -1.0f);
+    }
+
+    // Bottom Face
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+    // Right face
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, -1.0f, -1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
+    // Left Face
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+    glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
+    glEnd();
 }
 
 void changePaint(float red, float green, float blue) {
@@ -430,7 +497,7 @@ void drawRingue() {
     glTexCoord2f(1.0, 0); glVertex2f(25.0f, 25.0f);
     glTexCoord2f(1.0, 1.0); glVertex2f(25.0f, -25.0f);
     glEnd();
-    
+
     glPopMatrix(); // fim chão
 
 
@@ -480,7 +547,7 @@ void drawBraco(int tipo) {
     }
 
     glPushMatrix(); // junta
-    changePaint(0.9, 0.8, 0.8);
+    changePaint(0.5, 0.5, 0.5);
     glutSolidSphere(juntaTam, 16, 16);
     glPopMatrix(); // fim junta
 
@@ -488,7 +555,7 @@ void drawBraco(int tipo) {
     changePaint(redMembros, greenMembros, blueMembros);
     glTranslatef(0, -18, 0);
     glScalef(bracoSx, bracoSy, bracoSz);
-    glutWireCube(10);
+    glutSolidCube(10);
     glPopMatrix(); // fim ombro
 
     glTranslatef(0, -35, 0); // cotovelo
@@ -512,13 +579,13 @@ void drawBraco(int tipo) {
     changePaint(redMembros, greenMembros, blueMembros);
     glTranslatef(0, -18, 0);
     glScalef(bracoSx, bracoSy, bracoSz);
-    glutWireCube(10);
+    glutSolidCube(10);
 
     glTranslatef(0, -6, 0);
     glPushMatrix(); // inicia criação do mão
     changePaint(redExtremidades, greenExtremidades, blueExtremidades);
     glScalef(1, 0.2, 1);
-    glutWireSphere(10, 16, 16);
+    glutSolidSphere(10, 16, 16);
     glPopMatrix(); // fim mão
 
     glPopMatrix(); // fim antebraco
@@ -563,7 +630,7 @@ void drawPerna(int tipo) {
     changePaint(redMembros, greenMembros, blueMembros);
     glTranslatef(0, -18, 0);
     glScalef(pernaSx, pernaSy, pernaSz);
-    glutWireCube(10);
+    glutSolidCube(10);
     glPopMatrix();
 
     glTranslatef(0, -35, 0); // joelho
@@ -589,13 +656,13 @@ void drawPerna(int tipo) {
     changePaint(redMembros, greenMembros, blueMembros);
     glTranslatef(0, -18, 0);
     glScalef(pernaSx, pernaSy, pernaSz);
-    glutWireCube(10);
+    glutSolidCube(10);
 
     glTranslatef(0, -5.5, 3);
     glPushMatrix(); // inicia pé
     changePaint(redExtremidades, greenExtremidades, blueExtremidades);
     glScalef(1, 0.1, 1.5);
-    glutWireCube(10);
+    glutSolidCube(10);
     glPopMatrix(); // fim pé
 
     glPopMatrix(); // fim canela
@@ -606,6 +673,9 @@ void drawPerna(int tipo) {
 
 void drawCabeca() {
     glPushMatrix(); // inicio cabeca
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_b_difusa);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_b_especular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_b_brilho);
     changePaint(redExtremidades, greenExtremidades, blueExtremidades);
     glTranslatef(0, 31, 0);
     glScalef(1, 1.5, 1);
@@ -640,7 +710,9 @@ void drawTroncoSuperior() {
     glTranslatef(0, 13, 0);
     changePaint(redCorpo, greenCorpo, blueCorpo);
     glScalef(2, 2.5, 1.5);
-    glutSolidCube(10);
+    glBindTexture(GL_TEXTURE_2D, texture_id[1]);
+    cubo(0);
+
     glPopMatrix(); // fim tronco superior
 
     glPushMatrix(); // início braco esq
@@ -670,7 +742,8 @@ void drawTroncoInferior() {
     // changePaint(redCorpo, greenCorpo, blueCorpo);
     changePaint(0.5, 0.5, 0.5);
     glScalef(2, 2.5, 1.5);
-    glutSolidCube(10);
+    glBindTexture(GL_TEXTURE_2D, texture_id[2]);
+    cubo(0);
     glPopMatrix(); // fim tronco model
 
     glPushMatrix(); // início perna esq
@@ -1099,10 +1172,8 @@ void display(void)
 
     gluLookAt(cameraX, cameraY, cameraZ, 0, 0, 0, 0, 1, 0);
 
-    // drawPlane();
     drawRingue();
     drawRobots();
-    // drawPerna(0);
 
     glutSwapBuffers();
 }
@@ -1145,30 +1216,12 @@ void keyboard(unsigned char key, int x, int y)
         /* Fim controles da câmera */
 
         /* Controles da animação */
-    case '1':
-        animacaoAtual = 1;
-        // resetam posição para idle
-        resetAnim();
-        break;
 
     case '2':
         animacaoAtual = 2;
-        // resetam posição para socos
+        PlaySound(TEXT("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\naruto.wav"), NULL, SND_FILENAME | SND_ASYNC);
         resetAnim();
         break;
-
-    case '3':
-        animacaoAtual = 3;
-        // resetam posição para chute
-        resetAnim();
-        break;
-
-    case '4':
-        animacaoAtual = 4;
-        // resetam posição para cambalhota
-        resetAnim();
-        break;
-
         /* Fim controles da animação */
 
     }
