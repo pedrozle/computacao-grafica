@@ -384,10 +384,9 @@ GLuint tgaLoadAndBind(char* file_name, tgaFLAG mode)
 
 
 
-
-#define MAX_NO_TEXTURES 6
+#define MAX_NO_TEXTURES 10
 GLuint texture_id[MAX_NO_TEXTURES];
-
+float slices, stacks;
 
 
 void initTexture(void)
@@ -414,6 +413,11 @@ void initTexture(void)
     texture_id[2] = 1003;
     texture_id[3] = 1004;
     texture_id[4] = 1005;
+    texture_id[5] = 1006;
+    texture_id[6] = 1007;
+    texture_id[7] = 1008;
+    texture_id[8] = 1009;
+    texture_id[9] = 1010;
 
     // Define que tipo de textura ser� usada
     // GL_TEXTURE_2D ==> define que ser� usada uma textura 2D (bitmaps)
@@ -422,61 +426,25 @@ void initTexture(void)
     // // // carrega a uma imagem TGA 
     image_t background, sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune;
     glBindTexture(GL_TEXTURE_2D, texture_id[0]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\milky.tga", &background, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\milky.tga", &background, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[1]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\sun.tga", &sun, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\sun.tga", &sun, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[2]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\mercury.tga", &mercury, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\mercury.tga", &mercury, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[3]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\venus.tga", &venus, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\venus.tga", &venus, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[4]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\earth.tga", &earth, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\earth.tga", &earth, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[5]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\mars.tga", &mars, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\mars.tga", &mars, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[6]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\juspter.tga", &jupiter, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\juspter.tga", &jupiter, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[7]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\saturn.tga", &saturn, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\saturn.tga", &saturn, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[8]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\uranus.tga", &uranus, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\uranus.tga", &uranus, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[9]);
-    tgaLoad("D:\\computacao-grafica\\atividades\\planetario\\nepture.tga", &neptune, TGA_FREE | TGA_LOW_QUALITY);
-
-}
-
-void drawBackground() {
-
-    // glMatrixMode(GL_PROJECTION);
-    // glPushMatrix();
-    // glLoadIdentity();
-    // gluPerspective(95.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
-    // glMatrixMode(GL_MODELVIEW);
-    // glPushMatrix();
-
-
-    // glLoadIdentity();
-    // glDisable(GL_LIGHTING);
-
-
-    // glColor3f(1, 1, 1);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture_id[0]);
-
-    // Draw a textured quad
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex3f(0, 0, -100);
-    glTexCoord2f(0, 1); glVertex3f(0, glutGet(GLUT_WINDOW_HEIGHT), -100);
-    glTexCoord2f(1, 1); glVertex3f(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT), -100);
-    glTexCoord2f(1, 0); glVertex3f(glutGet(GLUT_WINDOW_WIDTH), 0, -100);
-    glEnd();
-
-
-    // glDisable(GL_TEXTURE_2D);
-    // glPopMatrix();
-
-
-    // glMatrixMode(GL_PROJECTION);
-    // glPopMatrix();
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\nepture.tga", &neptune, TGA_FREE | TGA_LOW_QUALITY);
 
 }
 
@@ -488,9 +456,10 @@ void init()
     glEnable(GL_DEPTH_TEST); // Enables Depth Testing
     glShadeModel(GL_SMOOTH); // Enables Smooth Color Shading
     initTexture();
+    slices = stacks = 30;
 }
 
-void drawPlanet(GLfloat red, GLfloat green, GLfloat blue, GLfloat radius, GLfloat slices, GLfloat stacks) {
+void drawPlanet(GLfloat radius) {
 
     glEnable(GL_TEXTURE_2D);
     GLUquadric* sphere;
@@ -533,7 +502,7 @@ void drawPlanetary() {
     // Draw planetary system
     glPushMatrix();
     glBindTexture(GL_TEXTURE_2D, texture_id[1]);
-    drawPlanet(1, 1, 0, 12.0f, 16, 16); // Sol
+    drawPlanet(12.0f); // Sol
 
     glPushMatrix(); // Push pai mercurio
     glRotatef(angleTransMercurio, 0, 1, 0);
@@ -542,7 +511,7 @@ void drawPlanetary() {
     glPopMatrix(); // Pop filhos mercurio
     glRotatef(angleRotMercurio, 0, 1, 0);
     glBindTexture(GL_TEXTURE_2D, texture_id[2]);
-    drawPlanet(0, 0, 1, tamMercurio, 16, 16); // Mercurio
+    drawPlanet(tamMercurio); // Mercurio
     glPopMatrix(); // Pop pai mercurio
 
     glPushMatrix(); // Push pai Venus
@@ -552,7 +521,7 @@ void drawPlanetary() {
     glPopMatrix(); // Pop filhos Venus
     glRotatef(angleRotVenus, 0, 1, 0);
     glBindTexture(GL_TEXTURE_2D, texture_id[3]);
-    drawPlanet(1, 0.6, 0, tamVenus, 16, 16); // Venus
+    drawPlanet(tamVenus); // Venus
     glPopMatrix(); // Pop pai Venus
 
     glPushMatrix(); // Push pai terra
@@ -561,11 +530,11 @@ void drawPlanetary() {
     glPushMatrix(); // Push filhos da terra
     glRotatef(angleRotTerra, 0, 1, 0);
     glBindTexture(GL_TEXTURE_2D, texture_id[4]);
-    drawPlanet(0, 0, 1, tamTerra, 16, 16); // Terra
+    drawPlanet(tamTerra); // Terra
     glPushMatrix(); // Push  pai Lua
     glTranslatef(distLua, 0, 0);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(0.5, 0.5, 0.5, tamLua, 16, 16); // Lua
+    drawPlanet(tamLua); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // pop pai lua
     glPopMatrix(); // pop filhos terra
@@ -577,18 +546,18 @@ void drawPlanetary() {
     glPushMatrix(); // Push filhos de marte
     glRotatef(angleRotMarte, 0, 1, 0);
     glBindTexture(GL_TEXTURE_2D, texture_id[5]);
-    drawPlanet(1, 0.2, 0, tamMarte, 16, 16); // Marte
+    drawPlanet(tamMarte); // Marte
     glPushMatrix(); // Push pai lua Fobos
     glTranslatef(-distLuaFobos, distLuaFobos, distLuaFobos);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 0.78, 0.5, tamLuaFobos, 16, 16); // Lua
+    drawPlanet(tamLuaFobos); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Fobos
 
     glPushMatrix(); // Push pai lua Deimos
     glTranslatef(distLuaDeimos, -distLuaDeimos, distLuaDeimos);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 1, 1, tamLuaDeimos, 16, 16); // Lua
+    drawPlanet(tamLuaDeimos); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Deimos
 
@@ -601,33 +570,33 @@ void drawPlanetary() {
     glPushMatrix(); // Push filhos de Jupiter
     glRotatef(45, 1, 0, 1);
     glRotatef(angleRotJupiter, 0, 0, 1);
-    glBindTexture(GL_TEXTURE_2D, texture_id[6]);
-    drawPlanet(1, 0.2, 0, tamJupiter, 16, 16); // Jupiter
+    glBindTexture(GL_TEXTURE_2D, texture_id[5]);
+    drawPlanet(tamJupiter); // Jupiter
     glPushMatrix(); // Push pai lua Io
     glTranslatef(distLuaIo, -distLuaIo, distLuaIo);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 0.78, 0.5, tamLuaIo, 16, 16); // Lua
+    drawPlanet(tamLuaIo); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Io
 
     glPushMatrix(); // Push pai lua Europa
     glTranslatef(distLuaEuropa, distLuaEuropa, -distLuaEuropa);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 1, 1, tamLuaEuropa, 16, 16); // Lua
+    drawPlanet(tamLuaEuropa); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Europa
 
     glPushMatrix(); // Push pai lua Ganimedes
     glTranslatef(distLuaGanimedes, distLuaGanimedes, distLuaGanimedes);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(0.78, 0.78, 0.78, tamLuaGanimedes, 16, 16); // Lua
+    drawPlanet(tamLuaGanimedes); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Ganimedes
 
     glPushMatrix(); // Push pai lua Calisto
     glTranslatef(distLuaCalisto, -distLuaCalisto, distLuaCalisto);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(0.5, 0.5, 0.5, tamLuaCalisto, 16, 16); // Lua
+    drawPlanet(tamLuaCalisto); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Calisto
 
@@ -641,8 +610,8 @@ void drawPlanetary() {
     glPushMatrix(); // Push filhos de Saturno
     glRotatef(-70, 0, 1, 0);
     glRotatef(angleRotSaturno, 0, 0, 1);
-    glBindTexture(GL_TEXTURE_2D, texture_id[7]);
-    drawPlanet(0.58, 0.39, 0.19, tamSaturno, 16, 16); // Saturno
+    glBindTexture(GL_TEXTURE_2D, texture_id[6]);
+    drawPlanet(tamSaturno); // Saturno
     drawRing(30, distInterAnelSaturnoA, distExterAnelSaturnoA);
     drawRing(30, distInterAnelSaturnoB, distExterAnelSaturnoB);
     drawRing(30, distInterAnelSaturnoC, distExterAnelSaturnoC);
@@ -651,14 +620,14 @@ void drawPlanetary() {
     glPushMatrix(); // Push pai lua Titã
     glTranslatef(-distLuaTita, distLuaTita, distLuaTita);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 0.78, 0.5, tamLuaTita, 16, 16); // Lua
+    drawPlanet(tamLuaTita); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Titã
 
     glPushMatrix(); // Push pai lua Encelado
     glTranslatef(distLuaEncelado, -distLuaEncelado, distLuaEncelado);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 1, 1, tamLuaEncelado, 16, 16); // Lua
+    drawPlanet(tamLuaEncelado); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Encelado
 
@@ -671,20 +640,20 @@ void drawPlanetary() {
     glPushMatrix(); // Push filhos de Urano
     glRotatef(-97, 0, 1, 0);
     glRotatef(angleRotUrano, 0, 0, 1);
-    glBindTexture(GL_TEXTURE_2D, texture_id[8]);
-    drawPlanet(0, 0.39, 1, tamUrano, 16, 16); // Urano
+    glBindTexture(GL_TEXTURE_2D, texture_id[7]);
+    drawPlanet(tamUrano); // Urano
     drawRing(30, distInterAnelUrano, distExterAnelUrano);
     glPushMatrix(); // Push pai lua Miranda
     glTranslatef(-distLuaMiranda, distLuaMiranda, distLuaMiranda);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 0.78, 0.5, tamLuaMiranda, 16, 16); // Lua
+    drawPlanet(tamLuaMiranda); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Miranda
 
     glPushMatrix(); // Push pai lua Titania
     glTranslatef(distLuaTitania, -distLuaTitania, distLuaTitania);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 1, 1, tamLuaTitania, 16, 16); // Lua
+    drawPlanet(tamLuaTitania); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Titania
 
@@ -697,13 +666,13 @@ void drawPlanetary() {
     glPushMatrix(); // Push filhos de Netuno
     glRotatef(28, 1, 1, 0);
     glRotatef(angleRotNetuno, 0, 0, 1);
-    glBindTexture(GL_TEXTURE_2D, texture_id[9]);
-    drawPlanet(0, 0, 1, tamNetuno, 16, 16); // Netuno
+    glBindTexture(GL_TEXTURE_2D, texture_id[8]);
+    drawPlanet(tamNetuno); // Netuno
     drawRing(30, distInterAnelNetuno, distExterAnelNetuno);
     glPushMatrix(); // Push pai lua Tritao
     glTranslatef(distLuaTritao, -distLuaTritao, -distLuaTritao);
     glPushMatrix(); // Push filhos da lua
-    drawPlanet(1, 0.78, 0.5, tamLuaTritao, 16, 16); // Lua
+    drawPlanet(tamLuaTritao); // Lua
     glPopMatrix(); // pop filhos lua
     glPopMatrix(); // Pop pai lua Tritao
 
@@ -727,8 +696,11 @@ void display(void)
 
     gluLookAt(cameraX, cameraY, cameraZ, 0, 0, 0, 0, 1, 0);
 
-    // drawBackground();
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D, texture_id[0]);
+    drawPlanet(500);
     drawPlanetary();
+    glPopMatrix();
 
     glutSwapBuffers();
 }
