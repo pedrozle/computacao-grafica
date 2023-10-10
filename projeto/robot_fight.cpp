@@ -402,19 +402,23 @@ void initTexture(void)
     texture_id[0] = 1001;
     texture_id[1] = 1002;
     texture_id[2] = 1003;
+    texture_id[3] = 1004;
 
     // Define que tipo de textura ser� usada
     // GL_TEXTURE_2D ==> define que ser� usada uma textura 2D (bitmaps)
     // texture_id[CUBE_TEXTURE]  ==> define o n�mero da textura 
     image_t ringue_chao, camisa_roboto;
     glBindTexture(GL_TEXTURE_2D, texture_id[0]);
-    tgaLoad("D:\\computacao-grafica\\projeto\\ringue.tga", &ringue_chao, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\ringue.tga", &ringue_chao, TGA_FREE | TGA_LOW_QUALITY);
 
     glBindTexture(GL_TEXTURE_2D, texture_id[1]);
-    tgaLoad("D:\\computacao-grafica\\projeto\\camisa.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\camisa.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
 
     glBindTexture(GL_TEXTURE_2D, texture_id[2]);
-    tgaLoad("D:\\computacao-grafica\\projeto\\cao.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\cao.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+
+    glBindTexture(GL_TEXTURE_2D, texture_id[3]);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\dojo.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
 }
 
 void cubo(int drawTop) {
@@ -908,12 +912,13 @@ void resetIdle() {
 
     transCorpoX = 0.0f;
     transCorpoY = 0.0f;
-    transCorpoZ = 0.0f;
+    transCorpoZ = 0;
 }
 
 void resetAnim() {
+    deltaTimeAngleCorpoY = 10;
     switch (animacaoAtual) {
-    case 1: // anim idle
+    case 2: // anim idle
         // Ombros
         angleOmbroDirX = angleOmbroDirY = angleOmbroDirZ = 0;
         angleOmbroEsqX = angleOmbroEsqY = angleOmbroEsqZ = 0;
@@ -930,15 +935,17 @@ void resetAnim() {
         angleJoelhoDirX = angleJoelhoDirY = angleJoelhoDirZ = 0;
         angleJoelhoEsqX = angleJoelhoEsqY = angleJoelhoEsqZ = 0;
 
+        transCorpoZ = 0;
+
         break;
-    case  2:
+    case  3:
         // tronco
         troncoAngleTopZ = 0;
 
         // reseta timer
         timerAnim = 0;
         break;
-    case 3:
+    case 4:
         // reseta o timer da animação da reverencia
         deltaTimeTroncoX = deltaTimeTroncoBase;
 
@@ -952,7 +959,7 @@ void resetAnim() {
         // delta time cotovelo
         deltaTimeCotoveloX = 6;
         break;
-    case 4:
+    case 5:
         // reseta o timer da animação da reverencia
         deltaTimeTroncoX = deltaTimeTroncoBase;
 
@@ -971,10 +978,10 @@ void resetAnim() {
         deltaTimeOmbroX = deltaTimeOmbroZ = deltaTimeOmbroBase;
         deltaTimeCotoveloX = deltaTimeCotoveloZ = deltaTimeCotoveloBase;
         break;
-    case  5:
+    case  6:
         deltaTimeCoxaZ = deltaTimeCoxaBase;
         break;
-    case 10:
+    case 9:
         // reseta o timer da animação da reverencia
         deltaTimeTroncoX = deltaTimeTroncoBase;
 
@@ -997,7 +1004,7 @@ void resetAnim() {
 
 void animate() {
 
-    if (animacaoAtual == 1) { // animação idle
+    if (animacaoAtual == 0) { // animação idle
         // anima o tronco
         troncoAngleTopZ += deltaTimeTroncoZ;
         if (troncoAngleTopZ > 5)
@@ -1005,6 +1012,36 @@ void animate() {
         else if (troncoAngleTopZ < -5)
             deltaTimeTroncoZ *= -1;
     }
+
+    if (animacaoAtual == 1) {
+
+        troncoAngleTopZ += deltaTimeTroncoZ;
+        if (troncoAngleTopZ > 5)
+            deltaTimeTroncoZ *= -1;
+        else if (troncoAngleTopZ < -5)
+            deltaTimeTroncoZ *= -1;
+
+        transCorpoZ += deltaTransCorpoZ;
+
+        angleCoxaDirX += deltaTimeCoxaBase;
+        angleCoxaEsqX = angleCoxaDirX * -1;
+
+        if (angleCoxaDirX > 30) {
+            deltaTimeCoxaBase *= -1;
+        }
+
+        if (angleCoxaDirX < -30) {
+            deltaTimeCoxaBase *= -1;
+        }
+
+        if (transCorpoZ > 0) {
+            animacaoAtual = 2;
+            PlaySound(TEXT("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\naruto.wav"), NULL, SND_FILENAME | SND_ASYNC);
+            resetAnim();
+        }
+
+    }
+
 
     if (animacaoAtual == 2) { // animação de reverência
         troncoAngleTopX += deltaTimeTroncoX;
@@ -1119,10 +1156,10 @@ void animate() {
 
     if (animacaoAtual == 8) {
         resetIdle();
-        animacaoAtual = 10;
+        animacaoAtual = 9;
     }
 
-    if (animacaoAtual == 10) { // cambalhota
+    if (animacaoAtual == 9) { // cambalhota
 
         angleCorpoX -= deltaTimeAngleCorpoX;
         angleCoxaDirX = angleCoxaEsqX = (angleCorpoX / -30) * -140;
@@ -1142,7 +1179,7 @@ void animate() {
         if (angleCorpoX < -360) {
             angleJoelhoDirX = angleJoelhoEsqX = angleCoxaDirX = angleCoxaEsqX = angleCorpoX = 0;
             resetIdle();
-            animacaoAtual = 1;
+            animacaoAtual = 0;
         }
 
     }
@@ -1174,7 +1211,6 @@ void display(void)
 
     drawRingue();
     drawRobots();
-
     glutSwapBuffers();
 }
 
@@ -1217,10 +1253,8 @@ void keyboard(unsigned char key, int x, int y)
 
         /* Controles da animação */
 
-    case '2':
-        animacaoAtual = 2;
-        PlaySound(TEXT("D:\\computacao-grafica\\projeto\\naruto.wav"), NULL, SND_FILENAME | SND_ASYNC);
-        resetAnim();
+    case '1':
+        animacaoAtual = 1;
         break;
         /* Fim controles da animação */
 
@@ -1254,8 +1288,8 @@ int main(int argc, char* argv[])
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(1000, 600);
-    glutInitWindowPosition(100, 100);
+    glutInitWindowSize(900, 600);
+    glutInitWindowPosition(150, 100);
     glutCreateWindow("Luta de Robotos?");
     init();
     glutDisplayFunc(display);

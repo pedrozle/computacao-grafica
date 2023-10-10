@@ -2,7 +2,7 @@
 int deltaTime = 2;
 
 /* Distância da câmera ao centro do mundo */
-float cameraDistanceBase = 500.0f;
+float cameraDistanceBase = 300.0f;
 float cameraDistance = cameraDistanceBase;
 
 /* Ângulo a ser adicionado na rotação da câmera */
@@ -17,7 +17,7 @@ float cameraAngleY = 0.0f;
 
 /* Variáveis para controlar animações */
 
-int animacaoAtual = 1;
+int animacaoAtual = 0;
 
 /* Cores para os robos */
 float redExtremidades = 0, greenExtremidades = 0, blueExtremidades = 0;
@@ -45,6 +45,7 @@ float angleCorpoY = 0.0f;
 float angleCorpoZ = 0.0f;
 
 float deltaTimeAngleCorpoX = deltaTime;
+float deltaTimeAngleCorpoY = 10;
 
 // Tronco
 float deltaTimeTroncoBase = 1.5;
@@ -125,4 +126,6 @@ float deltaTimeJoelho = deltaTime;
 
 float transCorpoX = 0.0f;
 float transCorpoY = 0.0f;
-float transCorpoZ = 0.0f;
+float transCorpoZ = -150.0f;
+
+float deltaTransCorpoZ = 2;
