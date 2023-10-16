@@ -9,6 +9,7 @@
 #include <cmath>
 #include "planetario.h"
 
+// ###################################################################################################
 
 /* Extension Management */
 PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  glCompressedTexImage2DARB = NULL;
@@ -379,7 +380,7 @@ GLuint tgaLoadAndBind(char* file_name, tgaFLAG mode)
     return texture_id;
 }
 
-
+// ###################################################################################################
 
 
 
@@ -426,25 +427,25 @@ void initTexture(void)
     // // // carrega a uma imagem TGA 
     image_t background, sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune;
     glBindTexture(GL_TEXTURE_2D, texture_id[0]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\milky.tga", &background, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\milky.tga", &background, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[1]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\sun.tga", &sun, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\sun.tga", &sun, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[2]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\mercury.tga", &mercury, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\mercury.tga", &mercury, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[3]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\venus.tga", &venus, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\venus.tga", &venus, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[4]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\earth.tga", &earth, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\earth.tga", &earth, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[5]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\mars.tga", &mars, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\mars.tga", &mars, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[6]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\juspter.tga", &jupiter, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\juspter.tga", &jupiter, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[7]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\saturn.tga", &saturn, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\saturn.tga", &saturn, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[8]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\uranus.tga", &uranus, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\uranus.tga", &uranus, TGA_FREE | TGA_LOW_QUALITY);
     glBindTexture(GL_TEXTURE_2D, texture_id[9]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\nepture.tga", &neptune, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\atividades\\planetario\\textures\\nepture.tga", &neptune, TGA_FREE | TGA_LOW_QUALITY);
 
 }
 

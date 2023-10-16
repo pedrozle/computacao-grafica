@@ -15,6 +15,8 @@
 
 using namespace std;
 
+// ###################################################################################################
+
 /* Extension Management */
 PFNGLCOMPRESSEDTEXIMAGE2DARBPROC  glCompressedTexImage2DARB = NULL;
 PFNGLGETCOMPRESSEDTEXIMAGEARBPROC glGetCompressedTexImageARB = NULL;
@@ -383,6 +385,8 @@ GLuint tgaLoadAndBind(char* file_name, tgaFLAG mode)
     return texture_id;
 }
 
+// ###################################################################################################
+
 
 // vetor com os n�meros das texturas
 GLuint texture_id[4];
@@ -409,16 +413,16 @@ void initTexture(void)
     // texture_id[CUBE_TEXTURE]  ==> define o n�mero da textura 
     image_t ringue_chao, camisa_roboto;
     glBindTexture(GL_TEXTURE_2D, texture_id[0]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\ringue.tga", &ringue_chao, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\Pedro\\Documents\\meus\\computacao-grafica\\projeto\\ringue.tga", &ringue_chao, TGA_FREE | TGA_LOW_QUALITY);
 
     glBindTexture(GL_TEXTURE_2D, texture_id[1]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\camisa.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\Pedro\\Documents\\meus\\computacao-grafica\\projeto\\camisa.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
 
     glBindTexture(GL_TEXTURE_2D, texture_id[2]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\cao.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\Pedro\\Documents\\meus\\computacao-grafica\\projeto\\cao.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
 
     glBindTexture(GL_TEXTURE_2D, texture_id[3]);
-    tgaLoad("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\dojo.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
+    tgaLoad("C:\\Users\\Pedro\\Documents\\meus\\computacao-grafica\\projeto\\dojo.tga", &camisa_roboto, TGA_FREE | TGA_LOW_QUALITY);
 }
 
 void cubo(int drawTop) {
@@ -1036,7 +1040,7 @@ void animate() {
 
         if (transCorpoZ > 0) {
             animacaoAtual = 2;
-            PlaySound(TEXT("C:\\Users\\pedro\\Documents\\repos\\static\\computacao-grafica\\projeto\\naruto.wav"), NULL, SND_FILENAME | SND_ASYNC);
+            PlaySound(TEXT("C:\\Users\\Pedro\\Documents\\meus\\computacao-grafica\\projeto\\naruto.wav"), NULL, SND_FILENAME | SND_ASYNC);
             resetAnim();
         }
 
